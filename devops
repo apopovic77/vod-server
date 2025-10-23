@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-REPO_ROOT="/Volumes/DatenAP/Code/vod-server"
+REPO_ROOT="/Volumes/DatenAP/Code/vod.arkturian.com"
 SCRIPTS_DIR="$REPO_ROOT/.devops/scripts"
 
 usage() {

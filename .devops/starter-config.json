@@ -8,7 +8,7 @@
   "NODE_VERSION": "18",
   "PROJECT_NAME": "VOD Server",
   "PROJECT_SLUG": "vod-server",
-  "REPO_ROOT": "/Volumes/DatenAP/Code/vod-server",
+  "REPO_ROOT": "/Volumes/DatenAP/Code/vod.arkturian.com",
   "SITE_URL": "https://vod.arkturian.com",
   "STARTER_PATH": "/Volumes/DatenAP/Code/github-starterpack",
   "WEB_GROUP": "www-data",

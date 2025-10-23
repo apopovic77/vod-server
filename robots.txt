@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Sitemap: https://vod.arkturian.com/sitemap.xml
+

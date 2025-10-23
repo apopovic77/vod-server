@@ -1,0 +1,16 @@
+{
+  "BACKUP_PREFIX": "vod-server",
+  "BUILD_COMMAND": "echo 'No build needed for static HTML application'",
+  "DEPLOY_PATH": "/var/www/vod.arkturian.com",
+  "DEV_BRANCH": "dev",
+  "INSTALL_DEPS_COMMAND": "echo 'No dependencies to install for static HTML'",
+  "MAIN_BRANCH": "main",
+  "NODE_VERSION": "18",
+  "PROJECT_NAME": "VOD Server",
+  "PROJECT_SLUG": "vod-server",
+  "REPO_ROOT": "/Volumes/DatenAP/Code/vod-server",
+  "SITE_URL": "https://vod.arkturian.com",
+  "STARTER_PATH": "/Volumes/DatenAP/Code/github-starterpack",
+  "WEB_GROUP": "www-data",
+  "WEB_USER": "www-data"
+}

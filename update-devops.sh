@@ -1,0 +1,1 @@
+/Volumes/DatenAP/Code/vod.arkturian.com/.devops/scripts/update-devops.sh

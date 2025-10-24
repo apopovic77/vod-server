@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-REPO_ROOT="/Volumes/DatenAP/Code/admin-panel"
+REPO_ROOT="/Volumes/DatenAP/Code/vod.arkturian.com"
 BUILD_COMMAND="echo 'No build needed for FastAPI'"
 
 usage() {

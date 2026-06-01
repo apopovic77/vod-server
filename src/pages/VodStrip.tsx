@@ -3,7 +3,7 @@ import VodTile, { type VodItem as VodItemType } from '../components/VodTile'
 
 type VodItem = VodItemType
 
-const API_BASE_URL = 'https://api-storage.arkturian.com'
+import { API_BASE_URL } from '../lib/apiBase'
 const API_KEY = 'Inetpass1'
 
 export default function VodStrip(){

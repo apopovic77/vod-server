@@ -5,7 +5,7 @@ import type { VodItem as VodItemType } from '../components/TheaterUnit'
 
 type VodItem = VodItemType
 
-const API_BASE_URL = 'https://api-storage.arkturian.com'
+import { API_BASE_URL } from '../lib/apiBase'
 const API_KEY = 'Inetpass1'
 
 type Cell = { col: number; row: number; width: number; height: number; left: number; top: number; itemIndex: number }

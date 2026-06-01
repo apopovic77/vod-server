@@ -21,7 +21,7 @@ type MediaItem = {
   ai_safety_error?: string
 }
 
-const API_BASE_URL = 'https://api-storage.arkturian.com'
+import { API_BASE_URL } from '../lib/apiBase'
 const API_KEY = 'Inetpass1'
 
 export default function ImageShare(){

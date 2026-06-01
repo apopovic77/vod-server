@@ -34,52 +34,13 @@ jobs:
           path: dist/
           retention-days: 1
 
-  deploy-staging:
-    name: Deploy to Staging (arkserver)
-    needs: build
-    continue-on-error: true  # Don't block production deploy if staging fails
-    if: |
-      (github.ref == 'refs/heads/dev' && github.event_name == 'push') ||
-      (github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch'))
-    runs-on: ubuntu-latest
-    environment:
-      name: staging
-      url: https://vod.arkserver.arkturian.com
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Download build artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: dist
-          path: dist/
-
-      - name: Upload artifacts to Staging Server (arkserver)
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.DEPLOY_HOST }}
-          username: ${{ secrets.DEPLOY_USER }}
-          key: ${{ secrets.DEPLOY_SSH_KEY }}
-          port: ${{ secrets.DEPLOY_PORT || 22 }}
-          source: "dist/*"
-          target: "/var/www/vod.arkserver.arkturian.com"
-          strip_components: 1
-          rm: true
-
-      - name: Set permissions on Staging Server
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.DEPLOY_HOST }}
-          username: ${{ secrets.DEPLOY_USER }}
-          key: ${{ secrets.DEPLOY_SSH_KEY }}
-          port: ${{ secrets.DEPLOY_PORT || 22 }}
-          script: |
-            DEPLOY_PATH="/var/www/vod.arkserver.arkturian.com"
-            chown -R www-data:www-data "$DEPLOY_PATH"
-            chmod -R 755 "$DEPLOY_PATH"
-            echo "✅ Staging deployment completed successfully!"
+  # NOTE: arkserver (vod.arkserver.arkturian.com) is an INTERNAL host, NOT
+  # reachable from GitHub-hosted runners. The old push-based "Deploy to Staging
+  # (arkserver)" scp job could never connect (i/o timeout) and — masked by
+  # continue-on-error: true — falsely reported success for months. arkserver now
+  # self-deploys from `dev` via a pull-based cron on the box
+  # (/usr/local/bin/vod-arkserver-deploy.sh + /etc/cron.d/vod-arkserver-deploy),
+  # so the broken push job is removed.
 
   deploy-production:
     name: Deploy to Production

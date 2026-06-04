@@ -3,6 +3,7 @@ import './portfolio.css'
 import Header from './components/Header'
 import SiteFooter from './components/SiteFooter'
 import Landing from './pages/Landing'
+import ImageEditor from './pages/ImageEditor'
 import Privacy from './pages/Privacy'
 import Terms from './pages/Terms'
 import Impressum from './pages/Impressum'
@@ -138,6 +139,8 @@ function InnerAppRoutes(){
         <Route path="/theater" element={<VodTheater />} />
         <Route path="/fusion" element={<VodFusion />} />
         <Route path="/fieldshare" element={<FieldShareUpload />} />
+        <Route path="/edit" element={<ImageEditor />} />
+        <Route path="/edit/:id" element={<ImageEditor />} />
         <Route path="/share/receive" element={<ShareReceive />} />
         <Route path="/share/videoshare" element={<VideoShare />} />
         <Route path="/share/v1" element={<ImageShare />} />

@@ -233,6 +233,16 @@ export default function VodPage(){
                 style={{ width:'100%', height:'100%', objectFit:'contain', display:'block' }}
               />
             )}
+            {current && !currentIsVideo && !isAudio(current) && (
+              <a
+                href={`/edit/${current.id}`}
+                className="pill"
+                title="Bild bearbeiten — Rotate / Crop / Spiegeln"
+                style={{ position:'absolute', top:12, right:12, pointerEvents:'auto', textDecoration:'none' }}
+              >
+                ✏️ Bearbeiten
+              </a>
+            )}
             {current && isAudio(current) && (
               <div className="vod-audio-viewer">
                 <div className="vod-audio-icon">♫</div>

@@ -51,7 +51,7 @@ export default function ImageEditor() {
       if (!(m.mime_type || '').startsWith('image/')) { setStatus(`Objekt ${oid} ist kein Bild (${m.mime_type})`); return }
       setMeta(m)
       // fetch bytes as blob → object URL (avoids canvas CORS taint, carries the key)
-      const ir = await fetch(`${API_BASE_URL}/storage/media/${oid}?variant=full`, { headers: { 'X-API-KEY': KEY } })
+      const ir = await fetch(`${API_BASE_URL}/storage/media/${oid}?variant=full&_=${Date.now()}`, { headers: { 'X-API-KEY': KEY } })
       const blob = await ir.blob()
       const url = URL.createObjectURL(blob)
       const im = new Image()
@@ -167,17 +167,18 @@ export default function ImageEditor() {
       const out = renderOutput(); if (!out) { setStatus('Nichts zu speichern'); setBusy(false); return }
       const isPng = (meta.mime_type || '').includes('png')
       const blob: Blob = await new Promise((res) => out.toBlob((b) => res(b!), isPng ? 'image/png' : 'image/jpeg', 0.95))
+      // Replace THIS object's bytes in place (targets the exact id, preserves
+      // GPS/title/collection/all DB metadata — no fragile filename+owner match,
+      // no duplicate object). The canvas export has no EXIF, but the stored
+      // lat/lon etc. survive because the server doesn't re-extract on replace.
       const fd = new FormData()
-      fd.append('file', blob, meta.original_filename)          // SAME filename → reuse_existing matches
-      fd.append('original_filename', meta.original_filename)
-      if (meta.owner_email) fd.append('owner_email', meta.owner_email)
-      fd.append('reuse_existing', 'true')                      // update existing object's bytes in place
-      const r = await fetch(`${API_BASE_URL}/storage/upload`, { method: 'POST', headers: { 'X-API-KEY': KEY }, body: fd })
-      if (!r.ok) { setStatus(`Upload fehlgeschlagen (HTTP ${r.status}): ${(await r.text()).slice(0, 200)}`); setBusy(false); return }
+      fd.append('file', blob, meta.original_filename)
+      const r = await fetch(`${API_BASE_URL}/storage/objects/${meta.id}/replace-image`, { method: 'POST', headers: { 'X-API-KEY': KEY }, body: fd })
+      if (!r.ok) { setStatus(`Speichern fehlgeschlagen (HTTP ${r.status}): ${(await r.text()).slice(0, 200)}`); setBusy(false); return }
       const saved = await r.json()
-      setStatus(`✅ Gespeichert → Objekt ${saved.id} aktualisiert (${out.width}×${out.height}). Cache ggf. mit ?refresh=true neu laden.`)
-      // reload to reflect the new bytes
-      setTimeout(() => loadObject(String(saved.id)), 600)
+      setStatus(`✅ Gespeichert → Objekt ${saved.id} in place aktualisiert (${out.width}×${out.height}, GPS/Metadaten erhalten).`)
+      // reload (cache-busted) to reflect the new bytes
+      setTimeout(() => loadObject(String(meta.id)), 600)
     } catch (e: any) { setStatus('Fehler: ' + (e?.message || e)) }
     setBusy(false)
   }

@@ -52,11 +52,16 @@ export default function ImageEditor() {
       setMeta(m)
       // fetch bytes as blob → object URL (avoids canvas CORS taint, carries the key)
       const ir = await fetch(`${API_BASE_URL}/storage/media/${oid}?variant=full&_=${Date.now()}`, { headers: { 'X-API-KEY': KEY } })
+      if (!ir.ok) {
+        const hint = ir.status === 451 ? ' (Quarantäne/AI-Safety)' : ''
+        setStatus(`Bild laden fehlgeschlagen: HTTP ${ir.status}${hint}`); return
+      }
       const blob = await ir.blob()
+      if (!blob.type.startsWith('image/')) { setStatus(`Antwort ist kein Bild (${blob.type || 'unbekannt'}, ${blob.size} B)`); return }
       const url = URL.createObjectURL(blob)
       const im = new Image()
       im.onload = () => { setImg(im); setStatus(`Geladen: ${m.original_filename} (${im.naturalWidth}×${im.naturalHeight})`); URL.revokeObjectURL(url) }
-      im.onerror = () => setStatus('Bild konnte nicht dekodiert werden')
+      im.onerror = () => setStatus('Bild konnte nicht dekodiert werden (Format vom Browser nicht unterstützt, z.B. HEIC)')
       im.src = url
     } catch (e: any) { setStatus('Fehler: ' + (e?.message || e)) }
   }, [])

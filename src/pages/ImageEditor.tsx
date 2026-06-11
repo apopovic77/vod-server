@@ -19,6 +19,67 @@ type ObjMeta = {
 
 type Crop = { x: number; y: number; w: number; h: number } | null
 
+const EDITOR_CSS = `
+.imed { max-width: 1080px; margin: 0 auto; padding: 24px 20px 60px; color: #e7eef5;
+  font: 14px/1.5 -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+.imed-top { display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+.imed-brand { display:flex; align-items:center; gap:9px; font-size:19px; font-weight:700; letter-spacing:-.01em; }
+.imed-logo { display:inline-grid; place-items:center; width:30px; height:30px; border-radius:9px;
+  background:linear-gradient(135deg,#06b6d4,#3b82f6); color:#031018; font-size:15px; }
+.imed-load { display:flex; gap:8px; }
+.imed-grow { flex:1; }
+.imed-input { width:120px; padding:9px 12px; border-radius:9px; border:1px solid #283947; background:#0d151d;
+  color:#e7eef5; font-size:14px; outline:none; transition:border-color .15s, box-shadow .15s; }
+.imed-input:focus { border-color:#06b6d4; box-shadow:0 0 0 3px rgba(6,182,212,.18); }
+.imed-btn { padding:9px 15px; border-radius:9px; border:1px solid #2c3e4d; background:#18242f; color:#e7eef5;
+  font-size:14px; font-weight:600; cursor:pointer; transition:background .14s, border-color .14s, transform .06s; }
+.imed-btn:hover { background:#21303d; border-color:#3a566b; }
+.imed-btn:active { transform:translateY(1px); }
+.imed-save { background:linear-gradient(135deg,#06b6d4,#0891b2); border-color:transparent; color:#02141a;
+  box-shadow:0 4px 14px rgba(6,182,212,.3); }
+.imed-save:hover { filter:brightness(1.08); }
+.imed-save:disabled { opacity:.6; cursor:default; filter:none; }
+.imed-meta { display:flex; align-items:center; gap:10px; margin-top:14px; font-size:13px; color:#93a7b8; flex-wrap:wrap; }
+.imed-pill { padding:3px 9px; border-radius:7px; background:#16222c; border:1px solid #283947; color:#cfe0ec;
+  font-weight:600; font-variant-numeric:tabular-nums; }
+.imed-fname { color:#e7eef5; font-weight:500; }
+.imed-dim { color:#6f8294; }
+.imed-empty { margin-top:32px; padding:54px 20px; text-align:center; border:1.5px dashed #2a3c4b;
+  border-radius:16px; background:#0e1620; }
+.imed-empty-ic { font-size:44px; opacity:.85; }
+.imed-empty-t { margin-top:10px; font-size:17px; font-weight:600; }
+.imed-empty-s { margin-top:6px; color:#8497a8; font-size:13.5px; }
+.imed-empty-s code { background:#16222c; padding:2px 6px; border-radius:5px; color:#cfe0ec; }
+.imed-work { margin-top:16px; }
+.imed-toolbar { display:flex; align-items:center; gap:8px; flex-wrap:wrap; padding:10px 12px; background:#101a23;
+  border:1px solid #20303c; border-radius:13px 13px 0 0; }
+.imed-grp { display:flex; gap:6px; }
+.imed-sep { width:1px; align-self:stretch; background:#243643; margin:2px 4px; }
+.imed-tbtn { min-width:40px; height:40px; padding:0 11px; display:inline-grid; place-items:center; border-radius:9px;
+  border:1px solid #2a3c4b; background:#172430; color:#dce8f2; font-size:18px; cursor:pointer;
+  transition:background .14s, border-color .14s, transform .06s; }
+.imed-tbtn.wide { font-size:14px; font-weight:600; min-width:auto; }
+.imed-tbtn:hover:not(:disabled) { background:#22323f; border-color:#3a566b; }
+.imed-tbtn:active:not(:disabled) { transform:translateY(1px); }
+.imed-tbtn.on { background:#06b6d4; border-color:#06b6d4; color:#02141a; }
+.imed-tbtn:disabled { opacity:.4; cursor:default; }
+.imed-straighten { display:flex; align-items:center; gap:9px; font-size:13px; color:#a9bccc; padding:0 4px; }
+.imed-straighten input[type=range] { accent-color:#06b6d4; width:130px; }
+.imed-deg { min-width:34px; font-variant-numeric:tabular-nums; color:#dce8f2; font-weight:600; }
+.imed-stage { display:flex; justify-content:center; align-items:center; padding:22px; background:#070d12;
+  border:1px solid #20303c; border-top:none; min-height:320px;
+  background-image:linear-gradient(45deg,#0b1219 25%,transparent 25%),linear-gradient(-45deg,#0b1219 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#0b1219 75%),linear-gradient(-45deg,transparent 75%,#0b1219 75%);
+  background-size:22px 22px; background-position:0 0,0 11px,11px -11px,-11px 0; }
+.imed-canvas { max-width:100%; touch-action:none; cursor:crosshair; border-radius:4px; box-shadow:0 8px 30px rgba(0,0,0,.5); }
+.imed-hint { padding:10px 14px; background:#101a23; border:1px solid #20303c; border-top:none;
+  border-radius:0 0 13px 13px; font-size:13px; color:#9fb3c4; }
+.imed-hint b { color:#dce8f2; }
+.imed-status { margin-top:16px; padding:11px 15px; border-radius:10px; font-size:13.5px; border:1px solid; }
+.imed-status.info { background:#0f1c26; border-color:#1f3848; color:#9fcfe6; }
+.imed-status.ok { background:#0d1f17; border-color:#1c4a35; color:#7fe3b0; }
+.imed-status.err { background:#241218; border-color:#5a2230; color:#f3a0ad; }
+`
+
 export default function ImageEditor() {
   const { id: routeId } = useParams()
   const [params] = useSearchParams()
@@ -188,47 +249,78 @@ export default function ImageEditor() {
     setBusy(false)
   }
 
+  const statusKind = !status ? '' : status.startsWith('✅') ? 'ok'
+    : /fehl|fehler|nicht gefunden|kein bild|konnte nicht|quaran|nichts/i.test(status) ? 'err' : 'info'
+
   return (
-    <div style={{ padding: 20, color: 'var(--text, #e8eef2)', maxWidth: 1000, margin: '0 auto' }}>
-      <h2 style={{ margin: '0 0 12px' }}>Bild-Editor</h2>
+    <div className="imed">
+      <style>{EDITOR_CSS}</style>
 
-      <div style={{ display: 'flex', gap: 8, marginBottom: 12, flexWrap: 'wrap', alignItems: 'center' }}>
-        <input value={idInput} onChange={(e) => setIdInput(e.target.value)} placeholder="Storage-Objekt-ID"
-          style={{ padding: '8px 10px', borderRadius: 8, border: '1px solid #2a3a44', background: '#0e1620', color: '#e8eef2', width: 180 }} />
-        <button onClick={() => loadObject(idInput)} style={btn}>Laden</button>
-        {meta && <span style={{ opacity: 0.8, fontSize: 13 }}>#{meta.id} · {meta.original_filename} · {meta.owner_email || 'kein owner'}</span>}
-      </div>
-
-      {img && (
-        <div style={{ display: 'flex', gap: 8, marginBottom: 10, flexWrap: 'wrap' }}>
-          <button onClick={() => rotate(-90)} style={btn}>⟲ 90° links</button>
-          <button onClick={() => rotate(90)} style={btn}>⟳ 90° rechts</button>
-          <button onClick={() => setFlipH((v) => !v)} style={btn}>⇋ Spiegeln H</button>
-          <button onClick={() => setFlipV((v) => !v)} style={btn}>⇅ Spiegeln V</button>
-          <button onClick={() => setCrop(null)} style={btn} disabled={!crop}>✕ Auswahl aufheben</button>
-          <label style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13 }}>
-            Fein {fine}°
-            <input type="range" min={-45} max={45} value={fine} onChange={(e) => setFine(Number(e.target.value))} />
-          </label>
-          <button onClick={save} disabled={busy} style={{ ...btn, background: '#06B6D4', color: '#04141a', fontWeight: 700 }}>
-            {busy ? 'Speichere…' : '💾 Speichern (überschreibt Original)'}
+      <header className="imed-top">
+        <div className="imed-brand"><span className="imed-logo">✦</span> Bild-Editor</div>
+        <div className="imed-load">
+          <input className="imed-input" value={idInput} onChange={(e) => setIdInput(e.target.value)}
+            placeholder="Objekt-ID" inputMode="numeric"
+            onKeyDown={(e) => { if (e.key === 'Enter') loadObject(idInput) }} />
+          <button className="imed-btn" onClick={() => loadObject(idInput)}>Laden</button>
+        </div>
+        <div className="imed-grow" />
+        {img && (
+          <button className="imed-btn imed-save" onClick={save} disabled={busy}>
+            {busy ? 'Speichere…' : '💾 Speichern'}
           </button>
+        )}
+      </header>
+
+      {meta && (
+        <div className="imed-meta">
+          <span className="imed-pill">#{meta.id}</span>
+          <span className="imed-fname">{meta.original_filename}</span>
+          <span className="imed-dim">· {meta.owner_email || 'kein owner'}</span>
+        </div>
+      )}
+
+      {!img && (
+        <div className="imed-empty">
+          <div className="imed-empty-ic">🖼️</div>
+          <div className="imed-empty-t">Kein Bild geladen</div>
+          <div className="imed-empty-s">Gib oben eine Storage-Objekt-ID ein und klick <b>Laden</b> — oder öffne <code>/edit/&lt;id&gt;</code> direkt.</div>
         </div>
       )}
 
       {img && (
-        <div style={{ background: '#0a1118', borderRadius: 10, padding: 10, display: 'inline-block' }}>
-          <canvas ref={canvasRef} onPointerDown={onDown} onPointerMove={onMove} onPointerUp={onUp}
-            style={{ maxWidth: '100%', touchAction: 'none', cursor: 'crosshair', borderRadius: 6 }} />
-          <div style={{ fontSize: 13, marginTop: 8, padding: '6px 10px', background: '#13202b', borderRadius: 6, border: '1px solid #2a3a44' }}>
-            ✂️ <b>Zum Zuschneiden:</b> mit der Maus ein Rechteck aufs Bild ziehen · innen ziehen = verschieben · Ecke unten-rechts = Größe ändern · dann <b>💾 Speichern</b>
+        <div className="imed-work">
+          <div className="imed-toolbar">
+            <div className="imed-grp">
+              <button className="imed-tbtn" title="90° nach links drehen" onClick={() => rotate(-90)}>↺</button>
+              <button className="imed-tbtn" title="90° nach rechts drehen" onClick={() => rotate(90)}>↻</button>
+            </div>
+            <span className="imed-sep" />
+            <div className="imed-grp">
+              <button className={'imed-tbtn' + (flipH ? ' on' : '')} title="Horizontal spiegeln" onClick={() => setFlipH((v) => !v)}>⇋</button>
+              <button className={'imed-tbtn' + (flipV ? ' on' : '')} title="Vertikal spiegeln" onClick={() => setFlipV((v) => !v)}>⇅</button>
+            </div>
+            <span className="imed-sep" />
+            <label className="imed-straighten">
+              <span>Begradigen</span>
+              <input type="range" min={-45} max={45} value={fine} onChange={(e) => setFine(Number(e.target.value))} />
+              <span className="imed-deg">{fine}°</span>
+            </label>
+            <span className="imed-sep" />
+            <button className="imed-tbtn wide" disabled={!crop} title="Crop-Auswahl entfernen" onClick={() => setCrop(null)}>✕ Auswahl</button>
+          </div>
+
+          <div className="imed-stage">
+            <canvas ref={canvasRef} onPointerDown={onDown} onPointerMove={onMove} onPointerUp={onUp} className="imed-canvas" />
+          </div>
+
+          <div className="imed-hint">
+            <b>✂️ Zuschneiden:</b> mit der Maus ein Rechteck aufs Bild ziehen · innen ziehen = verschieben · Ecke unten-rechts = Größe · dann <b>Speichern</b>
           </div>
         </div>
       )}
 
-      <div style={{ marginTop: 12, minHeight: 20, fontSize: 14, opacity: 0.9 }}>{status}</div>
+      {status && <div className={'imed-status ' + statusKind}>{status}</div>}
     </div>
   )
 }
-
-const btn: React.CSSProperties = { padding: '8px 12px', borderRadius: 8, border: '1px solid #2a3a44', background: '#13202b', color: '#e8eef2', cursor: 'pointer', fontSize: 14 }

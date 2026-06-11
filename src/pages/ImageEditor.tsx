@@ -200,7 +200,7 @@ export default function ImageEditor() {
           <button onClick={() => rotate(90)} style={btn}>⟳ 90° rechts</button>
           <button onClick={() => setFlipH((v) => !v)} style={btn}>⇋ Spiegeln H</button>
           <button onClick={() => setFlipV((v) => !v)} style={btn}>⇅ Spiegeln V</button>
-          <button onClick={() => setCrop(null)} style={btn}>Crop löschen</button>
+          <button onClick={() => setCrop(null)} style={btn} disabled={!crop}>✕ Auswahl aufheben</button>
           <label style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13 }}>
             Fein {fine}°
             <input type="range" min={-45} max={45} value={fine} onChange={(e) => setFine(Number(e.target.value))} />
@@ -215,7 +215,9 @@ export default function ImageEditor() {
         <div style={{ background: '#0a1118', borderRadius: 10, padding: 10, display: 'inline-block' }}>
           <canvas ref={canvasRef} onPointerDown={onDown} onPointerMove={onMove} onPointerUp={onUp}
             style={{ maxWidth: '100%', touchAction: 'none', cursor: 'crosshair', borderRadius: 6 }} />
-          <div style={{ fontSize: 12, opacity: 0.6, marginTop: 6 }}>Ziehen = Crop-Rechteck aufziehen · innen ziehen = verschieben · Ecke unten-rechts = Größe</div>
+          <div style={{ fontSize: 13, marginTop: 8, padding: '6px 10px', background: '#13202b', borderRadius: 6, border: '1px solid #2a3a44' }}>
+            ✂️ <b>Zum Zuschneiden:</b> mit der Maus ein Rechteck aufs Bild ziehen · innen ziehen = verschieben · Ecke unten-rechts = Größe ändern · dann <b>💾 Speichern</b>
+          </div>
         </div>
       )}
 

@@ -262,7 +262,17 @@ export default function VodPage(){
           <div className="vod-meta-bar">
             <div style={{ flex:1, minWidth:0 }}>
               <h3 className="vod-meta-title">{title}</h3>
-              {description && <p className="vod-meta-desc">{description}</p>}
+              {current && current.id >= 0 && (
+                <span
+                  onClick={()=> navigator.clipboard?.writeText(String(current.id))}
+                  title="Storage-ID — klicken zum Kopieren"
+                  style={{ display:'inline-block', marginTop:4, padding:'2px 9px', borderRadius:6,
+                    background:'rgba(255,255,255,.08)', border:'1px solid var(--ring,#2a3a44)',
+                    fontFamily:'monospace', fontSize:12, color:'var(--muted)', cursor:'pointer' }}>
+                  Storage-ID: {current.id}
+                </span>
+              )}
+              {description && <p className="vod-meta-desc" style={{ marginTop:6 }}>{description}</p>}
             </div>
             <div className="vod-meta-actions">
               <button className="pill" onClick={()=> setCurrentIndex(i => Math.max(0, i-1))} disabled={currentIndex<=0}>‹ Prev</button>
@@ -281,7 +291,7 @@ export default function VodPage(){
                 <img className="vod-sidebar-thumb" src={thumb(v)} alt="" loading="lazy" />
                 <div style={{ display:'flex', flexDirection:'column', gap:2, minWidth:0 }}>
                   <span className="vod-sidebar-title">{label(v)}</span>
-                  <span style={{ fontSize:11, color:'var(--muted)' }}>{isVideo(v) ? 'Video' : isAudio(v) ? 'Audio' : 'Image'}</span>
+                  <span style={{ fontSize:11, color:'var(--muted)', fontFamily:'monospace' }}>#{v.id} · {isVideo(v) ? 'Video' : isAudio(v) ? 'Audio' : 'Image'}</span>
                 </div>
               </button>
             ))}
@@ -302,6 +312,7 @@ export default function VodPage(){
                   {isAudio(v) && i !== currentIndex && <div className="vod-grid-badge">♫</div>}
                 </div>
                 <span className="vod-grid-title">{label(v)}</span>
+                <span style={{ fontSize:11, color:'var(--muted)', fontFamily:'monospace' }}>#{v.id}</span>
               </button>
             ))}
           </div>

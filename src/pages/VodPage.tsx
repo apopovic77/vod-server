@@ -278,6 +278,11 @@ export default function VodPage(){
               <button className="pill" onClick={()=> setCurrentIndex(i => Math.max(0, i-1))} disabled={currentIndex<=0}>‹ Prev</button>
               <button className="pill" onClick={()=> setCurrentIndex(i => Math.min(playlist.length-1, i+1))} disabled={currentIndex>=playlist.length-1}>Next ›</button>
               <button className="pill" onClick={like}>♥ {likes}</button>
+              {current && current.id >= 0 && (
+                <a className="pill" target="_blank" rel="noopener"
+                   href={`https://${window.location.hostname.replace(/^vod\./, 'admin.')}/storage2.php?id=${current.id}`}
+                   title="Dieses Objekt im Admin-Panel öffnen">⚙ Im Admin öffnen</a>
+              )}
             </div>
           </div>
         </div>

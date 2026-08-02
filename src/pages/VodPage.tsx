@@ -15,7 +15,8 @@ type VodItem = {
 }
 
 import { API_BASE_URL, thumbUrl } from '../lib/apiBase'
-const API_KEY = 'Inetpass1'
+import { getApiKey } from '../lib/apiKey'
+const API_KEY = getApiKey()
 
 function thumb(item: VodItem){
   // Always the canonical jpg thumbnail — never the server's PNG variant and

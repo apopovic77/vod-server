@@ -4,7 +4,8 @@ import VodTile, { type VodItem as VodItemType } from '../components/VodTile'
 type VodItem = VodItemType
 
 import { API_BASE_URL } from '../lib/apiBase'
-const API_KEY = 'Inetpass1'
+import { getApiKey } from '../lib/apiKey'
+const API_KEY = getApiKey()
 
 export default function VodStrip(){
   const url = new URL(window.location.href)

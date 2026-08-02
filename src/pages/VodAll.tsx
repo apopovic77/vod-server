@@ -6,7 +6,8 @@ type VodItem = VodItemType & { created_at?: string; file_size_bytes?: number }
 type Collection = { id: string; name: string; item_count: number }
 
 import { API_BASE_URL } from '../lib/apiBase'
-const API_KEY = 'Inetpass1'
+import { getApiKey } from '../lib/apiKey'
+const API_KEY = getApiKey()
 
 type MediaFilter = 'all' | 'image' | 'video'
 type SortOption = 'newest' | 'oldest'

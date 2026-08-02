@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import TextOnTread from '../components/TextOnTread'
 import AnimatedShaderBackground from '../components/AnimatedShaderBackground'
 import { md5File } from '../utils/md5'
+import { getApiKey, authHeaders } from '../lib/apiKey'
 
 export default function FieldShareUpload(){
   const navigate = useNavigate()
@@ -115,7 +116,7 @@ export default function FieldShareUpload(){
       for(const f of toUpload){
         const { data } = await sdk.uploadFileStorageUploadPost({
           file: f,
-          xAPIKEY: 'Inetpass1',
+          xAPIKEY: getApiKey(),
           context: undefined,
           isPublic: true,
           ownerEmail: userEmail || undefined,
@@ -127,7 +128,7 @@ export default function FieldShareUpload(){
         try{
           const id = (data as any)?.id
           if(id){
-            await fetch(`https://api-storage.arkturian.com/storage/objects/${id}`, { method:'PATCH', headers:{ 'X-API-KEY':'Inetpass1', 'Content-Type':'application/json' }, body: JSON.stringify({ link_id: linkId }) })
+            await fetch(`https://api-storage.arkturian.com/storage/objects/${id}`, { method:'PATCH', headers:{ ...authHeaders(), 'Content-Type':'application/json' }, body: JSON.stringify({ link_id: linkId }) })
           }
         } catch{}
         if((data as any)?.id){ uploadedIds.push((data as any).id as number) }

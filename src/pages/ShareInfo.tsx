@@ -3,7 +3,8 @@ import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 
 import { API_BASE_URL } from '../lib/apiBase'
-const API_KEY = 'Inetpass1'
+import { getApiKey } from '../lib/apiKey'
+const API_KEY = getApiKey()
 
 type MediaItem = {
   id: number

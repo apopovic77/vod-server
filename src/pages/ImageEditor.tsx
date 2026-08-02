@@ -1,13 +1,14 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
 import { useParams, useSearchParams } from 'react-router-dom'
 import { API_BASE_URL } from '../lib/apiBase'
+import { getApiKey } from '../lib/apiKey'
 
 // Photoshop-light image editor: load a storage object, rotate (90° steps + free
 // angle), flip, crop, then save by re-uploading with the SAME original_filename
 // + owner_email — the storage /upload endpoint auto-detects the duplicate
 // (reuse_existing) and updates the existing object's bytes in place.
 
-const KEY = 'Inetpass1'
+const KEY = getApiKey()
 
 type ObjMeta = {
   id: number

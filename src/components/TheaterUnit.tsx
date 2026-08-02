@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { thumbUrl } from '../lib/apiBase'
 import VodPlayer, { type VodPlayerHandle } from './VodPlayer'
 
 export type VodItem = {
@@ -52,7 +53,7 @@ export default function TheaterUnit({ item, mode, width, fixedHeight, showMeta =
   const isImage = item.mime_type?.startsWith('image/')
   const isAudio = item.mime_type?.startsWith('audio/')
   const mediaSrc = item.hls_url || item.file_url
-  const thumbnailSrc = item.thumbnail_url || item.file_url
+  const thumbnailSrc = thumbUrl(item as any)
 
   if(mode === 'theater'){
     if(!isVideo || !mediaSrc){

@@ -14,12 +14,13 @@ type VodItem = {
   likes?: number
 }
 
-import { API_BASE_URL } from '../lib/apiBase'
+import { API_BASE_URL, thumbUrl } from '../lib/apiBase'
 const API_KEY = 'Inetpass1'
 
 function thumb(item: VodItem){
-  if(item.thumbnail_url) return item.thumbnail_url
-  return `${API_BASE_URL}/storage/media/${item.id}?variant=thumbnail&format=jpg`
+  // Always the canonical jpg thumbnail — never the server's PNG variant and
+  // never file_url (the full-size original). See thumbUrl() for why.
+  return thumbUrl(item as any)
 }
 
 function fullSrc(item: VodItem){

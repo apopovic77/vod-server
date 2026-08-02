@@ -29,3 +29,19 @@ function resolveApiBase(): string {
 }
 
 export const API_BASE_URL: string = resolveApiBase()
+
+/**
+ * Canonical thumbnail URL for a gallery tile.
+ *
+ * Deliberately built from the ID instead of trusting `item.thumbnail_url`:
+ * the server emits that field WITHOUT `format=jpg`, which yields a PNG
+ * derivative (~73 KB vs ~15 KB) and — because `format` is part of the cache
+ * key — populates a second, redundant cache. Worse, callers used
+ * `item.file_url` as a fallback, i.e. the ORIGINAL image (1 MB+ at 2560x1440),
+ * which is what made tiles time out and render as broken images in the grid
+ * (2026-08-02). One URL shape here = one cache entry, ~15 KB per tile.
+ */
+export function thumbUrl(item: { id: number | string; checksum?: string }): string {
+  const v = item.checksum ? `&v=${item.checksum}` : ''
+  return `${API_BASE_URL}/storage/media/${item.id}?variant=thumbnail&format=jpg${v}`
+}

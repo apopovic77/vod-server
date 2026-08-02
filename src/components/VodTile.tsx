@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { thumbUrl } from '../lib/apiBase'
 import VodPlayer from './VodPlayer'
 
 export type VodItem = {
@@ -39,7 +40,7 @@ export default function VodTile({ item, width, fixedHeight, showMeta = true, aut
   // Check if item is a video
   const isVideo = !!item.hls_url || item.mime_type?.startsWith('video/')
   const mediaSrc = item.hls_url || item.file_url
-  const thumbnailSrc = item.thumbnail_url || item.file_url
+  const thumbnailSrc = thumbUrl(item as any)
 
   // Render media (video or image)
   const renderMedia = (height?: number) => {
